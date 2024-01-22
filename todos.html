@@ -1,0 +1,118 @@
+<div class="main">
+  <h1>TO DO LIST</h1>
+
+  <form class="form">
+    <input id="inputtask" type="text" placeholder="Enter your task here" />
+    <input id="addbutton" value="Add Task" type="submit" />
+  </form>
+  <ul class="todolist"></ul>
+</div>
+
+<script>
+  const inputTask = document.querySelector("#inputtask");
+  const form = document.querySelector(".form");
+  const addButton = document.querySelector("#addbutton");
+  const toDoList = document.querySelector(".todolist");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (inputTask.value == "") {
+      alert("please add Some Text");
+    } else {
+      const newTask = createNewTask(inputTask.value);
+      toDoList.appendChild(newTask);
+      inputTask.value = "";
+      inputTask.focus();
+    }
+  });
+  window.deleteTask = (task, btn) => {
+    btn.addEventListener("click", () => {
+      task.parentNode.removeChild(task);
+    });
+  };
+
+  window.editTask = (taskText, btn) => {
+    btn.addEventListener("click", () => {
+      taskText.contentEditable = true;
+      taskText.focus();
+    });
+  };
+
+  window.handleCompleted = (checkbox, taskText) => {
+    checkbox.addEventListener("change", (event) => {
+      if (event.target.checked) {
+        taskText.style.textDecoration = "line-through";
+      } else {
+        taskText.style.textDecoration = "none";
+      }
+    });
+  };
+
+  const createNewTask = (inputValue) => {
+    const task = document.createElement("li");
+    const span = document.createElement("span");
+    const deleteBtn = document.createElement("button");
+    const editBtn = document.createElement("button");
+    const completedBtn = document.createElement("input");
+    completedBtn.setAttribute("id", "toggleCompleted");
+    completedBtn.setAttribute("type", "checkbox");
+    console.log(completedBtn.checked);
+    span.textContent = inputValue;
+    deleteBtn.textContent = "Delete";
+    editBtn.textContent = "Edit";
+    task.appendChild(span);
+    task.appendChild(deleteBtn);
+    task.appendChild(editBtn);
+    task.appendChild(completedBtn);
+    window.deleteTask(task, deleteBtn);
+    window.editTask(span, editBtn);
+    window.handleCompleted(completedBtn, span);
+
+    return task;
+  };
+</script>
+
+<style>
+  li span:focus {
+    background-color: white;
+    color: black;
+    outline: none;
+    padding: 0 5px;
+    display: inline-block;
+    min-width: 300px;
+    max-width: 400px;
+  }
+  button,
+  #addbutton {
+    margin-left: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 0px solid transparent;
+    border: 1px solid white;
+    transition: 0.2s all ease-in-out;
+  }
+  li span {
+    font-size: 20px;
+  }
+  li span:focus {
+    font-size: 20px;
+    background-color: white;
+    color: black;
+    outline: none;
+    padding: 0 5px;
+    display: inline-block;
+    min-width: 300px;
+    max-width: 400px;
+    border: 2px solid black;
+    border-radius: 4px;
+  }
+
+  #inputtask {
+    min-width: 300px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+</style>
